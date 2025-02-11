@@ -52,3 +52,11 @@ func Run(searchTerm string) {
 	// after the final result is displayed
 	Display(results)
 }
+
+func Register(feedType string, matcher Matcher) {
+	if _,exists := matchers[feedType], exists {
+		log.Fatalln(feedType, "Matcher already registered")
+	}
+	log.Println("Register", feedType, "matcher")
+	matchers[feedType] = matcher
+}

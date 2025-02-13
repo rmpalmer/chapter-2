@@ -4,9 +4,10 @@ import (
 	"encoding/json"
 	"os"
 )
+
 const dataFile = "data/data.json"
 
-tpe Feed struct {
+type Feed struct {
 	Name string `json:"site"`
 	URI  string `json:"link"`
 	Type string `json:"type"`
@@ -14,9 +15,9 @@ tpe Feed struct {
 
 func RetrieveFeeds() ([]*Feed, error) {
 	//open the file
-	file,err := os.Open(dataFile)
-	if err := nil {
-		return nil,err
+	file, err := os.Open(dataFile)
+	if err != nil {
+		return nil, err
 	}
 
 	// schedule the file to be closed
@@ -28,4 +29,3 @@ func RetrieveFeeds() ([]*Feed, error) {
 
 	return feeds, err
 }
-

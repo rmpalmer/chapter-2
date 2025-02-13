@@ -5,8 +5,8 @@ import (
 	"log"
 	"os"
 
-	_ "matchers"
-	"search"
+	_ "chapter-2/matchers"
+	"chapter-2/search"
 )
 
 func init() {

@@ -5,13 +5,13 @@ import (
 	"sync"
 )
 
-var matchers = make(map[string],Matcher)
+var matchers = make(map[string]Matcher)
 
 func Run(searchTerm string) {
 
 	// retrieve the list of feeds to search through
 	feeds, err := RetrieveFeeds()
-	if (err != nil) {
+	if err != nil {
 		log.Fatal(err)
 	}
 
@@ -24,7 +24,7 @@ func Run(searchTerm string) {
 	// set the number of goroutines we need to wait for
 	waitGroup.Add(len(feeds))
 
-	for _, feed := range(feeds) {
+	for _, feed := range feeds {
 		//retrieve a marchter for the search
 		matcher, exists := matchers[feed.Type]
 		if !exists {
@@ -32,18 +32,18 @@ func Run(searchTerm string) {
 		}
 
 		// launch the goroutine to perform the search
-		go func (matcher Matcher, feed *Feed) {
-			Match (matcher, feet, searchTerm, results)
+		go func(matcher Matcher, feed *Feed) {
+			Match(matcher, feed, searchTerm, results)
 			waitGroup.Done()
-		} (matcher, feed)
+		}(matcher, feed)
 	}
 
 	// launch a goroutine to monitor when all the work is done
-	go func () {
+	go func() {
 		//wait for everything to be processed
 		waitGroup.Wait()
 
-		//close the channel to signal to the display function that 
+		//close the channel to signal to the display function that
 		// can exit the program
 		close(results)
 	}()
@@ -54,7 +54,7 @@ func Run(searchTerm string) {
 }
 
 func Register(feedType string, matcher Matcher) {
-	if _,exists := matchers[feedType], exists {
+	if _, exists := matchers[feedType]; exists {
 		log.Fatalln(feedType, "Matcher already registered")
 	}
 	log.Println("Register", feedType, "matcher")
